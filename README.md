@@ -1,6 +1,6 @@
 # MyButton Library for Arduino IDE
 
-<img src="images/demo.png" width=640>
+<img src="images/demo.gif" width=640>
 
 > Demo using the ```readInSteps``` function (check examples for demo)
 
@@ -19,7 +19,7 @@ This library allows for:
 
 ## How to use ?
 
-Instanciate the button object with the required options:
+### 1 - Instanciate the button object with the required options:
 
 - Default debouncing time of **5ms**:
 
@@ -31,7 +31,9 @@ Instanciate the button object with the required options:
 
 The ```NORMAL_UP```, and ```NORMAL_DOWN``` keywords refer to whether the push button is normally UP or DOWN (pulled UP or DOWN).
 
-Then call any function following the examples.
+### 2 - Then call a function following the examples, though:
+
+One thing to take into consideration, is that for saving on resources, and since there's no apparent use-case where someone would configure one button to exert more than one of the behaviors possible through the functions, the time tracking and the state variables are **shared** between functions, so calling _ as an example _ ```readRisingClick()```, and ```readFallingClick``` back to back in the same loop would make the code behave unpredictibly.
 
 ## How to install ?
 
