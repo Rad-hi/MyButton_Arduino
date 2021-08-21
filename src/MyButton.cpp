@@ -171,7 +171,7 @@ uint32_t MyButton :: readTimedPress(uint8_t unit){
  * @param period: The total period to be split in steps 
  * @param num_steps: The number of steps to split the period on
  */
-uint8_t MyButton :: readInSteps(int period, uint8_t num_steps){
+uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
   /* Obviously */
   if(num_steps == 0) return NON_CLICKED;
   

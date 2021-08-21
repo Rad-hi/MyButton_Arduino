@@ -69,7 +69,7 @@
       bool readRisingClick();
       bool readFallingClick();
       uint32_t readTimedPress(uint8_t unit);
-      uint8_t readInSteps(int period, uint8_t num_steps);
+      uint8_t readInSteps(uint32_t period, uint8_t num_steps);
       uint8_t readMultiple(uint32_t * periods, uint8_t len);
   };
   
