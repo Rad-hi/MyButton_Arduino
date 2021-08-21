@@ -37,6 +37,14 @@ One thing to take into consideration, is that for saving on resources, and since
 
 ## How to install ?
 
+### 1 - Through the Arduino Library manager:
+
+Go to **tools -> Manage Libraries... -> Type MyButton** and as shown in the picture below, you'll find the MyButton library.
+
+<img src="images/install.png" width=640>
+
+### 2 - Direct download/import: 
+
 <img src="images/download.png" width=640>
 
 Click on **Download ZIP** to download the library, place the unzipped folder into your libraries folder in your **arduinosketchfolder/libraries/PUT_HERE**(on Windows, this is likely to be under **Documents/Arduino/libraries**, on linux this is under **home/Arduino/libraries**). You may need to create the libraries subfolder if its your first library. Now, restart the IDE.
