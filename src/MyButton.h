@@ -53,6 +53,7 @@
       uint8_t btn_state_multiple; // State of the button in the multiple behaviors function
       unsigned long time_since_clicked; // Keeps track of the timings
       uint32_t timed_read; // To hold the timed read time in microseconds
+      uint8_t rised; // This flag is used to only send the "rised" detection
       
       /* Button parameters */
       uint8_t button_pin;

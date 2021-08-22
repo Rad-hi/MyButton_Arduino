@@ -111,13 +111,15 @@ bool MyButton :: readRisingClick(){
       if(digitalRead(button_pin) == (1 - off_state)){
         time_since_clicked = millis();
         btn_state = WAIT_BTN;
+        rised = 1;
       }
       break;
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
         btn_state = READ_BTN;
       }
-      else if(millis() - time_since_clicked >= debounce_time){
+      else if((millis() - time_since_clicked >= debounce_time) && rised){
+        rised = 0;
         return true;
       }
       break;
