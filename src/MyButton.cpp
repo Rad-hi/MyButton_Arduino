@@ -36,6 +36,7 @@ MyButton :: MyButton(uint8_t pin, uint8_t off_state_){
   button_pin = pin;
   off_state = off_state_;
   debounce_time = DEFAULT_DEBOUNCE;
+  flag = 0x00;
   
   switch(off_state_){
     case NORMAL_UP:
@@ -61,7 +62,8 @@ MyButton :: MyButton(uint8_t pin, uint8_t off_state_, uint8_t debounce_t){
   button_pin = pin;
   off_state = off_state_;
   debounce_time = debounce_t;
-  
+  flag = 0x00;
+
   switch(off_state){
     case NORMAL_UP:
       pinMode(pin, INPUT_PULLUP);
@@ -77,24 +79,24 @@ MyButton :: MyButton(uint8_t pin, uint8_t off_state_, uint8_t debounce_t){
  * Returns whether the button was pressed or not with the debounce time (FALLING EDGE)
  */
 bool MyButton :: readFallingClick(){
-  switch(btn_state){
+  switch((flag & BTN_STATE_BITMASK) >> 2){
     case READ_BTN:
       if(digitalRead(button_pin) == (1 - off_state)){
         time_since_clicked = millis();
-        btn_state = WAIT_BTN;
+        flag = (flag & ~BTN_STATE_BITMASK) | (1 << 2);
       }
       break;
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
-        btn_state = READ_BTN;
+        flag &= ~BTN_STATE_BITMASK;
       }
       else if(millis() - time_since_clicked >= debounce_time){
-        btn_state = TRUE_CLICK; // We have a true click
+        flag = (flag & ~BTN_STATE_BITMASK) | (2 << 2); // We have a true click
       }
       break;
     case TRUE_CLICK:
       if(digitalRead(button_pin) == off_state){
-        btn_state = READ_BTN;
+        flag &= ~BTN_STATE_BITMASK;
         return true;
       }
     default: break;
@@ -106,20 +108,19 @@ bool MyButton :: readFallingClick(){
  * Returns whether the button was pressed or not with the debounce time (RISING EDGE)
  */
 bool MyButton :: readRisingClick(){
-  switch(btn_state){
+  switch((flag & BTN_STATE_BITMASK) >> 2){
     case READ_BTN:
       if(digitalRead(button_pin) == (1 - off_state)){
         time_since_clicked = millis();
-        btn_state = WAIT_BTN;
-        rised = 1;
+        flag = (flag & ~BTN_STATE_BITMASK) | (1 << 2) | RISED_BITMASK;
       }
       break;
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
-        btn_state = READ_BTN;
+        flag &= ~BTN_STATE_BITMASK;
       }
-      else if((millis() - time_since_clicked >= debounce_time) && rised){
-        rised = 0;
+      else if((millis() - time_since_clicked >= debounce_time) && (flag & RISED_BITMASK)){
+        flag &= ~RISED_BITMASK;
         return true;
       }
       break;
@@ -136,24 +137,17 @@ bool MyButton :: readRisingClick(){
  *              and returns the time in the specified unit
  */
 uint32_t MyButton :: readTimedPress(uint8_t unit){
-  switch(btn_state){
+  switch((flag & BTN_STATE_BITMASK) >> 2){
     case READ_BTN:
       if(digitalRead(button_pin) == (1 - off_state)){
         timed_read = micros();
-        btn_state = WAIT_BTN;
+        flag = (flag & ~BTN_STATE_BITMASK) | (1 << 2);
       }
       break;
+      
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
-        btn_state = READ_BTN;
-      }
-      else if(millis() - time_since_clicked >= debounce_time){
-        btn_state = TRUE_CLICK; // We have a true click
-      }
-      break;
-    case TRUE_CLICK:
-      if(digitalRead(button_pin) == off_state){
-        btn_state = READ_BTN;
+        flag &= ~BTN_STATE_BITMASK;
         switch(unit){
           case IN_SECONDS:
             return (uint32_t)((micros() - timed_read) / 1e6);
@@ -184,18 +178,26 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
   /* Obviously */
   if(num_steps == 0) return NON_CLICKED;
   
-  switch(btn_state_step){
+  switch((flag & BTN_STATE_STEP_BITMASK) >> 4){
     case READ_BTN:
       step = 0;
       if(digitalRead(button_pin) == (1 - off_state)){
         time_since_clicked = millis();
-        btn_state_step = WAIT_BTN;
+        flag = (flag & ~BTN_STATE_STEP_BITMASK) | (1 << 4);
       }
       return NON_CLICKED;
-      
+    
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
-        btn_state_step = READ_BTN;
+        flag &= ~BTN_STATE_STEP_BITMASK;
+      }
+      else if(millis() - time_since_clicked >= debounce_time){
+        flag = (flag & ~BTN_STATE_STEP_BITMASK) | (2 << 4); // We have a true click
+      }
+      break;
+    case TRUE_CLICK:
+      if(digitalRead(button_pin) == off_state){
+        flag &= ~BTN_STATE_STEP_BITMASK;
         if(step < num_steps - 1) return ABORTED_STEPS;
       }
       else if(millis() - time_since_clicked >= (period/num_steps)*(step + 1)){
@@ -219,11 +221,11 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
  * @param len: Number of periods
  */
 uint8_t MyButton :: readMultiple(uint32_t * periods, uint8_t len){
-  switch(btn_state_multiple){
+  switch((flag & BTN_STATE_MULTIPLE_BITMASK) >> 6){
     case READ_BTN:
       if(digitalRead(button_pin) == (1 - off_state)){
         time_since_clicked = millis();
-        btn_state_multiple = WAIT_BTN;
+        flag |= BTN_STATE_MULTIPLE_BITMASK;
       }
       return NON_CLICKED;
 
@@ -231,11 +233,11 @@ uint8_t MyButton :: readMultiple(uint32_t * periods, uint8_t len){
       if(digitalRead(button_pin) == off_state){
         for(uint8_t idx = len - 1; idx >= 0; idx--){
           if(millis() - time_since_clicked >= periods[idx]){
-            btn_state_multiple = READ_BTN;
+            flag &= ~BTN_STATE_MULTIPLE_BITMASK;
             return idx;
           }
         }
-        btn_state_multiple = READ_BTN;
+        flag &= ~BTN_STATE_MULTIPLE_BITMASK;
       }
       break;
   }

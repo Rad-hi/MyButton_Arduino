@@ -27,35 +27,49 @@
 
   #include "Arduino.h"
 
-  #define NORMAL_UP             1     /* Normally closed or open */
-  #define NORMAL_DOWN           0
+  #define NORMAL_UP                      1     /* Normally closed or open */
+  #define NORMAL_DOWN                    0
 
-  #define DEFAULT_DEBOUNCE      5     /* Milliseconds */
+  #define DEFAULT_DEBOUNCE               5     /* Milliseconds */
 
-  #define NON_CLICKED           255   /* Value to be returned when no event is being captured */
-  #define ABORTED_STEPS         244   /* Is case we're doing a read in steps and a user stops 
-                                         in the middle of the click, we return this value     */
+  #define NON_CLICKED                    255   /* Value to be returned when no event is being captured */
+  #define ABORTED_STEPS                  254   /* Is case we're doing a read in steps and a user stops 
+                                                  in the middle of the click, we return this value     */
   
-  #define READ_BTN              0     /* Button states */
-  #define WAIT_BTN              1
-  #define TRUE_CLICK            2
+  #define READ_BTN                       0     /* Button states */
+  #define WAIT_BTN                       1
+  #define TRUE_CLICK                     2
 
-  #define IN_SECONDS            1     /* Units to return the timed-read in */
-  #define IN_MILLIS             2
-  #define IN_MICROS             3
+  #define IN_SECONDS                     1     /* Units to return the timed-read in */
+  #define IN_MILLIS                      2
+  #define IN_MICROS                      3
+
+  /* Flag bitmasks (according to the structure down delow) */
+  #define RISED_BITMASK                  0x80
+  #define BTN_STATE_MULTIPLE_BITMASK     0x40
+  #define BTN_STATE_STEP_BITMASK         0x30
+  #define BTN_STATE_BITMASK              0x0C
   
+  /* The class containing all functionalities */
   class MyButton{
     
     private:
 
       /* Variables used insed the functions to achieve the non-blocking behaviour */
+
+      /* 
+       * FLAG STRUCTURE :
+       * +-------+--------------------+-------------------+-------------------+---------------+-------------+------------+------------+
+       * | 1 Bit |       1 Bit        |                 2 Bits                |            2 Bits           |   1 Bit    |   1 Bit    |
+       * +-------+--------------------+-------------------+-------------------+---------------+-------------+------------+------------+
+       * | RISED | BTN STATE MULTIPLE | BTN STATE STEP(H) | BTN STATE STEP(L) | BTN STATE (H) | BTN STEP(L) |            |            |
+       * +-------+--------------------+-------------------+-------------------+---------------+-------------+------------+------------+
+       */
+      uint8_t flag;
+      
       uint8_t step; //Keeps track of the step in the read_steps function
-      uint8_t btn_state;  // State of the button in the normal read functions (RISING/FALLING)
-      uint8_t btn_state_step; // State of the button in the steps reading function
-      uint8_t btn_state_multiple; // State of the button in the multiple behaviors function
       unsigned long time_since_clicked; // Keeps track of the timings
       uint32_t timed_read; // To hold the timed read time in microseconds
-      uint8_t rised; // This flag is used to only send the "rised" detection
       
       /* Button parameters */
       uint8_t button_pin;
