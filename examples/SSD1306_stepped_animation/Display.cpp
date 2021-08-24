@@ -11,17 +11,6 @@ Adafruit_SSD1306 MySSD1306 :: create_display(TwoWire * wire){
   return display;
 }
 
-/*  
- * (X0, Y0) +---------------------+
- *          |     AREA TO BE      |
- *          |       CLEARED       |
- *          +---------------------+ (X1, Y1)
- */
-void MySSD1306 :: clear_partial(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
-  display.fillRect(x1, y1, x2, y2, SSD1306_BLACK);
-  display.display();
-}
-
 /* Init display */
 void MySSD1306 :: initial_display(){
   display.begin(SSD1306_SWITCHCAPVCC, I2C_SSD1306_ADDR);
@@ -29,10 +18,10 @@ void MySSD1306 :: initial_display(){
 }
 
 /* Animation during the button pressing */
-void MySSD1306 :: update_button(uint8_t step, uint8_t len, PAIR_t * coordinates){
+void MySSD1306 :: update_button(uint8_t step, PAIR_t * coordinates, bool erase){
 
-  if(step == len - 1){
-    for(uint8_t i = 0; i < len-1; i++){
+  if(erase){
+    for(uint8_t i = 0; i < step; i++){
       display.drawBitmap(coordinates[i].x, coordinates[i].y, 
                          button_bmp, 
                          BUTTON_BMP_WIDTH, BUTTON_BMP_HEIGHT, 
@@ -45,8 +34,6 @@ void MySSD1306 :: update_button(uint8_t step, uint8_t len, PAIR_t * coordinates)
                        BUTTON_BMP_WIDTH, BUTTON_BMP_HEIGHT, 
                        SSD1306_WHITE);
   }
-  
-  display.display();
 }
 
 /* Text displaying function */

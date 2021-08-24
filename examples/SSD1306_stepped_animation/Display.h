@@ -20,8 +20,6 @@
       
       Adafruit_SSD1306 create_display(TwoWire * wire);
       
-      /* Send a command to the display */
-      void clear_partial(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
       
     public:
 
@@ -32,7 +30,7 @@
       void initial_display();
 
       /* This function shall update the buffer without making the change */
-      void update_button(uint8_t step, uint8_t len, PAIR_t * coordinates);
+      void update_button(uint8_t step, PAIR_t * coordinates, bool erase);
       void update_msg(const char * msg);
 
       /* This function commits the changes needed in the display */

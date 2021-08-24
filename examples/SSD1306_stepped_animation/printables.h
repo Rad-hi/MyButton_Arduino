@@ -13,7 +13,7 @@
   #define MSG_CHAR_WIDTH         (5 * MSG_CHAR_SIZE)
   #define MSG_Y_POS              ((I2C_SCREEN_HEIGHT - MSG_CHAR_HEIGHT) / 2)
   #define MSG_X_POS              MSG_CHAR_WIDTH
-  #define MSG_VIZ_TIME           20000UL /* Milliseconds */
+  #define MSG_VIZ_TIME           5000UL /* Milliseconds */
 
   /* Button pressed animation params */
   #define LEFT_MOST_POS          4 /* Pixels from bottom of the screen */

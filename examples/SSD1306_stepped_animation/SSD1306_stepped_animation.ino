@@ -6,6 +6,15 @@
  * is used to animate a progress bar of a push-button.
  * ----------------------------------------------------------------------------
  * A wrapper class for the Adafruit_SSD1306 library was created for clarity purposes
+ * ----------------------------------------------------------------------------
+ * Author: Radhi SGHAIER: https://github.com/Rad-hi
+ * -----------------------------------------------------------------------------
+ * Date: 24-08-2021 (24th of August, 2021)
+ * -----------------------------------------------------------------------------
+ * License: Do whatever you want with the code ...
+ *          If this was ever useful to you, and we happened to meet on 
+ *          the street, I'll appreciate a cup of dark coffee, no sugar please.
+ * -----------------------------------------------------------------------------
  */
 
 #include "Display.h"
@@ -21,7 +30,7 @@ MyButton my_btn(MY_BUTTON_PIN, NORMAL_UP);
 /*---------------------------------------------------------------------------------------*/
 
 /* Display object; Created the wrapper just for clarity purposes */
-TwoWire i2c_display_port = TwoWire(0); /* SDA 21, SCL 22 */
+TwoWire i2c_display_port = TwoWire(0); /* SDA 21, SCL 22 (On an ESP32)*/
 MySSD1306 my_display(&i2c_display_port);
 
 /*---------------------------------------------------------------------------------------*/
@@ -62,13 +71,15 @@ void loop() {
   if(step < num_steps){
 
     /* Visulaize the next step of the animation */
-    my_display.update_button(step, num_steps, btn_locs);
+    my_display.update_button(step, btn_locs, false);
 
     /* Reached end of sequence */
     if(step == num_steps - 1)my_display.update_msg(msg); /* Show msg */
   }
 
   /* In case we stop clicking in the middle of the animation, we erase */
-  else if(step == NON_CLICKED)my_display.update_button(num_steps - 1, num_steps, btn_locs);
-  
+  else if(step == ABORTED_STEPS)my_display.update_button(step, btn_locs, true);
+
+  /* Apply modifications to the screen */
+  my_display.commit_update();
 }
