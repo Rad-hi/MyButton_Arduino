@@ -61,3 +61,7 @@ The ```readRisingClick()``` was repeatedly reporting a "rising edge" detection a
 - Updated the Display API (wrapper class to the Adafruit_SSD1306 library) to make it more efficient and more intuitive, no change in how it works though.
 - Grouped the state variables used for all functions into a single ```uint8_t flag``` saving with this 3 bytes of memory.
 - Added multiple buttons driven animations example.
+
+### v1.1.0 (24th August, 2021)
+
+- The major change is that, there were some compatibility issues with Arduino, and now the examples work with **both the Arduino UNO, and the ESP32** (Only tested on an **UNO** and an **ESP32**, gonna try to test on an **ESP8266** soon).
