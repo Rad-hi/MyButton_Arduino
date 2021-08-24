@@ -1,8 +1,8 @@
 # MyButton Library for Arduino IDE
 
-<img src="images/demo.gif" width=640>
+<img src="images/multi_btn_1x75.gif" width=640>
 
-> Demo using the ```readInSteps``` function (check examples for demo)
+> Demo using the ```readInSteps``` function (check the SSD1306_multibutton example for code)
 
 ## A push button debouncing and "enhancing" library for complex user interfaces
 
