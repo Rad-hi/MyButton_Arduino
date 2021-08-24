@@ -48,3 +48,15 @@ Go to **tools -> Manage Libraries... -> Type MyButton** and as shown in the pict
 <img src="images/download.png" width=640>
 
 Click on **Download ZIP** to download the library, place the unzipped folder into your libraries folder in your **arduinosketchfolder/libraries/PUT_HERE**(on Windows, this is likely to be under **Documents/Arduino/libraries**, on linux this is under **home/Arduino/libraries**). You may need to create the libraries subfolder if its your first library. Now, restart the IDE.
+
+## Change LOG
+
+### v1.0.1 (22nd August, 2021):
+
+The ```readRisingClick()``` was repeatedly reporting a "rising edge" detection as long as the button was pressed, so fixed that, and now it's reporting only the detection of the rising edge, as it's supposed to do.
+
+### v1.0.2 (24th August, 2021):
+
+- Added debouncing to ```readInSteps()``` and made it return a **ABORTED_STEPS** value when the user stops pressing in the middle of the pressing period without reaching the intended stepped-period.
+- Added multiple buttons driven animations example.
+- Updated the Display API (wrapper class to the Adafruit_SSD1306 library) to make it more efficient and more intuitive, no change in how it works though.
