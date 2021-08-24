@@ -1,7 +1,9 @@
 /*
  * Examples on how to use all functions of the MyButton library
  * ------------------------------------------------------------------
- * Uncomment any example you want to use.
+ * Uncomment any example you want to use. 
+ * (TIP: To uncomment, select the text and press: <ctrl> + < / > keys).
+ * ------------------------------------------------------------------
  * In case you choose to do a NORMAL_DOWN button, make sure to externally 
  * pull down the push-button, otherwise, an internal pull-up resistor is
  * used by default to the NORMAL_UP mode.
@@ -38,7 +40,7 @@ void loop() {
   /*------------------------------------------------------------------------------*/
   /* ON CLICK (RISING EDGE) EXAMPLE                                               */
   /*------------------------------------------------------------------------------*/
-  
+
   /* On the click moment, a boolean true is returned */
   if(my_btn.readRisingClick()){
     Serial.println("RISING :: Button clicked!");
