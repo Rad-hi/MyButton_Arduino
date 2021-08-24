@@ -143,8 +143,15 @@ uint32_t MyButton :: readTimedPress(uint8_t unit){
         btn_state = WAIT_BTN;
       }
       break;
-      
     case WAIT_BTN:
+      if(digitalRead(button_pin) == off_state){
+        btn_state = READ_BTN;
+      }
+      else if(millis() - time_since_clicked >= debounce_time){
+        btn_state = TRUE_CLICK; // We have a true click
+      }
+      break;
+    case TRUE_CLICK:
       if(digitalRead(button_pin) == off_state){
         btn_state = READ_BTN;
         switch(unit){
@@ -189,6 +196,7 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
         btn_state_step = READ_BTN;
+        if(step < num_steps - 1) return ABORTED_STEPS;
       }
       else if(millis() - time_since_clicked >= (period/num_steps)*(step + 1)){
         return step++;

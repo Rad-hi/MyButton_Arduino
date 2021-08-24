@@ -33,6 +33,8 @@
   #define DEFAULT_DEBOUNCE      5     /* Milliseconds */
 
   #define NON_CLICKED           255   /* Value to be returned when no event is being captured */
+  #define ABORTED_STEPS         244   /* Is case we're doing a read in steps and a user stops 
+                                         in the middle of the click, we return this value     */
   
   #define READ_BTN              0     /* Button states */
   #define WAIT_BTN              1
