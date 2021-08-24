@@ -22,7 +22,13 @@
 
 /*---------------------------------------------------------------------------------------*/
 
-#define MY_BUTTON_PIN             32
+#if defined(ARDUINO_AVR_UNO)
+  #define MY_BUTTON_PIN           7 // Use pin 7 on the arduino (absolutely no reason)
+#elif defined(ARDUINO_ARCH_ESP32)
+  #define MY_BUTTON_PIN           32 // Use pin 32 on the ESP32 (absolutely no reason)
+#endif
+
+/*---------------------------------------------------------------------------------------*/
 
 /* Button object */
 MyButton my_btn(MY_BUTTON_PIN, NORMAL_UP);
@@ -30,13 +36,19 @@ MyButton my_btn(MY_BUTTON_PIN, NORMAL_UP);
 /*---------------------------------------------------------------------------------------*/
 
 /* Display object; Created the wrapper just for clarity purposes */
-TwoWire i2c_display_port = TwoWire(0); /* SDA 21, SCL 22 (On an ESP32)*/
+
+#if defined(ARDUINO_AVR_UNO)
+  TwoWire i2c_display_port = TwoWire(); /* SDA A4, SCL A5 (On an UNO)*/
+#elif defined(ARDUINO_ARCH_ESP32)
+  TwoWire i2c_display_port = TwoWire(0); /* SDA 21, SCL 22 (On an ESP32)*/
+#endif
+
 MySSD1306 my_display(&i2c_display_port);
 
 /*---------------------------------------------------------------------------------------*/
 
 /* Message to be displayed when button is clicked for more than the specified period (in our case, 6s) */
-static const char msg[] PROGMEM = "MyButton Library, \nreadInSteps() demo";
+const char msg[] = "MyButton Library, \nreadInSteps() demo";
 
 /* Duration and number of steps in the animation */
 const uint32_t duration = 2000;

@@ -43,7 +43,7 @@ void MySSD1306 :: update_msg(const char * msg){
   display.setTextSize(MSG_CHAR_SIZE);             
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(MSG_X_POS, MSG_Y_POS);
-  display.print(F(msg));
+  display.print(msg);
   
   display.display();
 

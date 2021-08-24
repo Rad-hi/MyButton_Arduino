@@ -22,10 +22,23 @@
 
 /*---------------------------------------------------------------------------------------*/
 
-#define LEFT_TO_RIGHT_BUTTON_PIN      32
-#define UP_TO_DOWN_BUTTON_PIN         33
-#define DIAGONAL_BUTTON_PIN           25
-#define RANDOM_BUTTON_PIN             26
+/* If you're using an arduino UNO, use pins 2 -> 5 for the buttons */
+#if defined(ARDUINO_AVR_UNO)
+
+  #define LEFT_TO_RIGHT_BUTTON_PIN      2
+  #define UP_TO_DOWN_BUTTON_PIN         3
+  #define DIAGONAL_BUTTON_PIN           4
+  #define RANDOM_BUTTON_PIN             5
+
+/* If you're using an ESP32, use pins 32, 33, 25, 26 for the buttons */
+#elif defined(ARDUINO_ARCH_ESP32)
+
+  #define LEFT_TO_RIGHT_BUTTON_PIN      32
+  #define UP_TO_DOWN_BUTTON_PIN         33
+  #define DIAGONAL_BUTTON_PIN           25
+  #define RANDOM_BUTTON_PIN             26
+
+#endif
 
 /* Button object */
 uint8_t debounce_time = 10;
@@ -37,13 +50,19 @@ MyButton random_btn(RANDOM_BUTTON_PIN, NORMAL_UP, debounce_time);
 /*---------------------------------------------------------------------------------------*/
 
 /* Display object; Created the wrapper just for clarity purposes */
-TwoWire i2c_display_port = TwoWire(0); /* SDA 21, SCL 22 (On the ESP32)*/
+
+#if defined(ARDUINO_AVR_UNO)
+  TwoWire i2c_display_port = TwoWire(); /* SDA A4, SCL A5 (On an UNO)*/
+#elif defined(ARDUINO_ARCH_ESP32)
+  TwoWire i2c_display_port = TwoWire(0); /* SDA 21, SCL 22 (On an ESP32)*/
+#endif
+
 MySSD1306 my_display(&i2c_display_port);
 
 /*---------------------------------------------------------------------------------------*/
 
 /* Message to be displayed when button is clicked for more than the specified period (in our case, 6s) */
-static const char msg[] PROGMEM = "MyButton Library, \nreadInSteps() demo";
+static const char msg[] = "MyButton Library, \nreadInSteps() demo";
 
 /* Durations of the animations */
 const uint32_t fast_duration = 1000;

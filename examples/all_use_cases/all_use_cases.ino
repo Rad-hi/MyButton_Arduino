@@ -11,10 +11,10 @@
 
 #include <MyButton.h>
 
-#define MY_BUTTON_PIN         32
+#define MY_BUTTON_PIN         5
 
 /* Instanciate the button object */
-MyButton my_btn(MY_BUTTON_PIN, NORMAL_UP);
+MyButton my_btn(MY_BUTTON_PIN, NORMAL_UP, 50);
 
 /* Periods [milliseconds] for the multiple behaviors example, MUST BE IN INCREMENTAL ORDER */
 uint32_t periods[] = {5, 1000, 2000, 4000};
@@ -26,11 +26,11 @@ char buf[255];
 unsigned long last_print;
 
 /* Steps' indexes for the steps example */
-static const char steps_index PROGMEM [9][8] = {"first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth"};
+static const char steps_index [9][8] = {"first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "nineth"};
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("--- Click me! ---");
   last_print = millis();
 }
