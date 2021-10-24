@@ -76,6 +76,9 @@
       uint8_t debounce_time;
       uint8_t off_state;
 
+      /* Constructor function */
+      void _build_button(uint8_t pin, uint8_t off_state_, uint8_t debounce_t);
+
     public:
     
       /* Constructors */
