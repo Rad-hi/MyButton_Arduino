@@ -13,7 +13,7 @@
   
   #define GET_ISR(BTN_OBJ, BTN_ISR)     ([]{(BTN_OBJ.BTN_ISR)();})
 
-  class MyCoutingButton{
+  class MyCountingButton{
     private:
 
       // Button variables
@@ -37,7 +37,7 @@
       
     public:
 
-      MyCoutingButton();
+      MyCountingButton();
       
       // Creation of the counter on an hardware interrupt (pin must be hardware interrupt enabled)
       void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void));

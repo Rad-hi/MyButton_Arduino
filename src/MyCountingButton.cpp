@@ -1,6 +1,6 @@
 #include "MyCountingButton.h"
 
-MyCoutingButton :: MyCoutingButton(){
+MyCountingButton :: MyCountingButton(){
   resetCount();
   _trig_flag = _trigger_on_count = _operate_interrupt = false;
 }
@@ -9,15 +9,15 @@ MyCoutingButton :: MyCoutingButton(){
 /* ------------------------- BUILD INTERRUPTION COUNTER ----------------------------- */
 /* ---------------------------------------------------------------------------------- */
 
-void MyCoutingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void)){
+void MyCountingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void)){
   beginCountingInterrupter(irq_pin, _ISR_callback, DEFUALT_DIRECTION, FALLING);
 }
 
-void MyCoutingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_){
+void MyCountingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_){
   beginCountingInterrupter(irq_pin, _ISR_callback, dir_, FALLING);
 }
 
-void MyCoutingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_, uint8_t trigger_on){
+void MyCountingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_, uint8_t trigger_on){
   _operate_interrupt = true;
   _direction = dir_;
   attachInterrupt(digitalPinToInterrupt(irq_pin), _ISR_callback, trigger_on);
@@ -27,7 +27,7 @@ void MyCoutingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_ca
 /* ----------------------------- ISR COUNTER CALLBACK ------------------------------- */
 /* ---------------------------------------------------------------------------------- */
 
-void MyCoutingButton :: countingInterruption(){
+void MyCountingButton :: countingInterruption(){
   _trigger_time = millis(); // millis() doesn't increment inside an ISR, but we just need the value it holds
   _trig_flag = true;
 }
@@ -36,19 +36,19 @@ void MyCoutingButton :: countingInterruption(){
 /* ---------------------------- BUILD NORMAL COUNTER -------------------------------- */
 /* ---------------------------------------------------------------------------------- */
 
-void MyCoutingButton :: begin(uint8_t pin){
+void MyCountingButton :: begin(uint8_t pin){
   begin(pin, DEFAULT_OFF_STATE, DEFUALT_DIRECTION, DEFAULT_DEBOUNCE);
 }
 
-void MyCoutingButton :: begin(uint8_t pin, uint8_t off_state){
+void MyCountingButton :: begin(uint8_t pin, uint8_t off_state){
   begin(pin, off_state, DEFUALT_DIRECTION, DEFAULT_DEBOUNCE);
 }
 
-void MyCoutingButton :: begin(uint8_t pin, uint8_t off_state, uint8_t dir){
+void MyCountingButton :: begin(uint8_t pin, uint8_t off_state, uint8_t dir){
   begin(pin, off_state, dir, DEFAULT_DEBOUNCE);
 }
 
-void MyCoutingButton :: begin(uint8_t pin, uint8_t off_state, uint8_t dir, uint8_t debounce_t){
+void MyCountingButton :: begin(uint8_t pin, uint8_t off_state, uint8_t dir, uint8_t debounce_t){
   _button_pin = pin;
   _off_state = off_state;
   _direction = dir;
@@ -69,31 +69,31 @@ void MyCoutingButton :: begin(uint8_t pin, uint8_t off_state, uint8_t dir, uint8
 /* ------------------------- SETUP FUNCTIONS FOR COUNTER ---------------------------- */
 /* ---------------------------------------------------------------------------------- */
 
-void MyCoutingButton :: setupTriggerOnCount(long count, void (*callback)(void)){
+void MyCountingButton :: setupTriggerOnCount(long count, void (*callback)(void)){
   _trigger_on_count = true;
   _count_callback = callback; // Assign the function to be called when the goal count is reached
   setTriggerCount(count);
 }
 
-void MyCoutingButton :: setDirection(int8_t direction){ _direction = direction; }
+void MyCountingButton :: setDirection(int8_t direction){ _direction = direction; }
 
-void MyCoutingButton :: resetCount(){ _counter = 0; }
+void MyCountingButton :: resetCount(){ _counter = 0; }
 
-void MyCoutingButton :: setCount(long count){ _counter = count; }
+void MyCountingButton :: setCount(long count){ _counter = count; }
 
-void MyCoutingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
+void MyCountingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
 
 /* ----------------------------------------------------------------------------------- */
 /* -------------------------- KEY FUNCTION FOR COUNTER ------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-long MyCoutingButton :: getCount(){ return _counter; }
+long MyCountingButton :: getCount(){ return _counter; }
 
 /* ----------------------------------------------------------------------------------- */
 /* ------------------------- LOOP (SHOWROOM) FOR COUNTER ----------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-void MyCoutingButton :: loopCounter(){
+void MyCountingButton :: loopCounter(){
 
   // We check if there's a function to be called when a certain action happens
   if(_trigger_on_count && _counter == _trigger_count) (*_count_callback)();
@@ -146,6 +146,7 @@ void MyCoutingButton :: loopCounter(){
       
       break;
     } // END _ Non interrupt case
-  }
-  
+
+    default: break;
+  } // END _ OP mode selector
 }
