@@ -25,13 +25,8 @@
 #ifndef __MY_BUTTON_H__
   #define __MY_BUTTON_H__
 
-  #include "Arduino.h"
-
-  #define NORMAL_UP                      1     /* Normally closed or open */
-  #define NORMAL_DOWN                    0
-
-  #define DEFAULT_DEBOUNCE               5     /* Milliseconds */
-
+  #include "Configs.h"
+  
   #define NON_CLICKED                    255   /* Value to be returned when no event is being captured */
   #define ABORTED_STEPS                  254   /* Is case we're doing a read in steps and a user stops 
                                                   in the middle of the click, we return this value     */
