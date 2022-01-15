@@ -1,8 +1,31 @@
+/* 
+ * -----------------------------------------------------------------------------
+ * Library: MyCountingButton
+ * This is a sequel to the "MyButton" library that allows for couting buttons.
+ * It allows for:
+ *    - Couting of clicks on the RISING/FALLING/CHANGING edges
+ *    - Couting on hardware interruption enabled pins (expl: for encodes),
+ *      or any "normal" pin
+ *    - Triggering of a custom callback function when a set value is reached
+ *    - Set the counting direction (++/--), and set a custom value to count from 
+ * All happening in a non-blocking manner.
+ * -----------------------------------------------------------------------------
+ * Author: Radhi SGHAIER: https://github.com/Rad-hi
+ * -----------------------------------------------------------------------------
+ * Date: 15-01-2022 (15th of January, 2022)
+ * -----------------------------------------------------------------------------
+ * License: Do whatever you want with the code ...
+ *          If this was ever useful to you, and we happened to meet on 
+ *          the street, I'll appreciate a cup of dark coffee, no sugar please.
+ * -----------------------------------------------------------------------------
+ */
+
 #include "MyCountingButton.h"
 
 MyCountingButton :: MyCountingButton(){
   resetCount();
   _trig_flag = _trigger_on_count = _operate_interrupt = false;
+  _profile = ON_FALLING; // Default counting profile is Falling edge
 }
 
 /* ---------------------------------------------------------------------------------- */
@@ -75,23 +98,27 @@ void MyCountingButton :: setupTriggerOnCount(long count, void (*callback)(void))
   setTriggerCount(count);
 }
 
-void MyCountingButton :: setDirection(int8_t direction){ _direction = direction; }
+inline void MyCountingButton :: setDirection(int8_t direction){ _direction = direction; }
 
-void MyCountingButton :: resetCount(){ _counter = 0; }
+inline void MyCountingButton :: resetCount(){ _counter = 0; }
 
-void MyCountingButton :: setCount(long count){ _counter = count; }
+inline void MyCountingButton :: setCount(long count){ _counter = count; }
 
-void MyCountingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
+inline void MyCountingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
+
+inline void MyCountingButton :: setCountingProfile(uint8_t profile){ _profile = (profile >= 0 && profile <= 2) ? profile : _profile; }
 
 /* ----------------------------------------------------------------------------------- */
 /* -------------------------- KEY FUNCTION FOR COUNTER ------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-long MyCountingButton :: getCount(){ return _counter; }
+inline long MyCountingButton :: getCount(){ return _counter; }
 
 /* ----------------------------------------------------------------------------------- */
 /* ------------------------- LOOP (SHOWROOM) FOR COUNTER ----------------------------- */
 /* ----------------------------------------------------------------------------------- */
+
+inline void MyCountingButton :: _increment_counter(){ _counter += _direction; }
 
 void MyCountingButton :: loopCounter(){
 
@@ -104,7 +131,7 @@ void MyCountingButton :: loopCounter(){
 
       // ISR was triggered and button is still pressed
       if(_trig_flag && (millis() - _trigger_time >= _debounce_time)){
-        _counter += _direction;
+        _increment_counter();
         _trig_flag = false;
       }
       break;
@@ -115,29 +142,27 @@ void MyCountingButton :: loopCounter(){
       static unsigned long time_since_clicked;
 
       switch(pin_state){
-        case 0:
+        case READ_:
           if(digitalRead(_button_pin) == (1 - _off_state)){
-            pin_state = 1;
+            pin_state = CLICK_;
             time_since_clicked = millis();
           }
         break;
 
-        case 1:
-          if(millis() - time_since_clicked >= debounce_time){
-            pin_state = 2; // True click
-            
-            #error "Imlement this!" // Increment counter on rising edge
+        case CLICK_:
+          if(millis() - time_since_clicked >= _debounce_time){
+            pin_state = RELEASE_; // True click
+            if(_profile == ON_CHANGE || _profile == ON_RISING) _increment_counter();
           }
           else if(digitalRead(_button_pin) == _off_state){
-            pin_state = 0; // Bounce
+            pin_state = READ_; // Bounce
           }
         break;
 
-        case 2:
+        case RELEASE_:
           if(digitalRead(_button_pin) == _off_state){
-            pin_state = 0; // Released
-
-            #error "Imlement this!" // Increment counter on falling edge (or change)
+            pin_state = READ_; // Released
+            if(_profile == ON_CHANGE || _profile == ON_FALLING) _increment_counter();
           }
         break;
 
