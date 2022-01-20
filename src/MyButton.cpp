@@ -24,10 +24,29 @@
 
 #include "MyButton.h"
 
+
 /*
- * Private function that is called by the two constructors to assign the values 
+ * Constructor that defaults to a debounce time of 5ms
+ * ------------------------------------------------------------------
+ * @pram pin: Button pin
+ * @param off_state_: Is it pulled UP or DOWN 
+ *                    (if off_state_ == NORMAL_UP; pulled UP, then
+ *                     we'll apply an internal PULL UP)
  */
-void MyButton :: _build_button(uint8_t pin, uint8_t off_state_, uint8_t debounce_t){
+MyButton :: MyButton(uint8_t pin, uint8_t off_state_){
+  MyButton(pin, off_state_, DEFAULT_DEBOUNCE);
+}
+
+/*
+ * Constructor that configures the debounce time according to the user's pref
+ * ------------------------------------------------------------------
+ * @pram pin: Button pin
+ * @param off_state_: Is it pulled UP or DOWN 
+ *                    (if off_state_ == NORMAL_UP; pulled UP, then
+ *                     we'll apply an internal PULL UP)
+ * @param debounce_t: Debouncing time in ms 
+ */
+MyButton :: MyButton(uint8_t pin, uint8_t off_state_, uint8_t debounce_t){
   button_pin = pin;
   off_state = off_state_;
   debounce_time = debounce_t;
@@ -42,31 +61,6 @@ void MyButton :: _build_button(uint8_t pin, uint8_t off_state_, uint8_t debounce
       pinMode(pin, INPUT);
       break;
   }
-}
-
-/*
- * Constructor that defaults to a debounce time of 5ms
- * ------------------------------------------------------------------
- * @pram pin: Button pin
- * @param off_state_: Is it pulled UP or DOWN 
- *                    (if off_state_ == NORMAL_UP; pulled UP, then
- *                     we'll apply an internal PULL UP)
- */
-MyButton :: MyButton(uint8_t pin, uint8_t off_state_){
-  build_button(pin, off_state_, DEFAULT_DEBOUNCE);
-}
-
-/*
- * Constructor that configures the debounce time according to the user's pref
- * ------------------------------------------------------------------
- * @pram pin: Button pin
- * @param off_state_: Is it pulled UP or DOWN 
- *                    (if off_state_ == NORMAL_UP; pulled UP, then
- *                     we'll apply an internal PULL UP)
- * @param debounce_t: Debouncing time in ms 
- */
-MyButton :: MyButton(uint8_t pin, uint8_t off_state_, uint8_t debounce_t){
-  build_button(pin, off_state_, debounce_t);
 }
 
 /*
