@@ -43,6 +43,7 @@ void MyCountingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_c
 void MyCountingButton :: beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_, uint8_t trigger_on){
   _operate_interrupt = true;
   _direction = dir_;
+  pinMode(irq_pin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(irq_pin), _ISR_callback, trigger_on);
 }
 
@@ -98,27 +99,27 @@ void MyCountingButton :: setupTriggerOnCount(long count, void (*callback)(void))
   setTriggerCount(count);
 }
 
-inline void MyCountingButton :: setDirection(int8_t direction){ _direction = direction; }
+void MyCountingButton :: setDirection(int8_t direction){ _direction = direction; }
 
-inline void MyCountingButton :: resetCount(){ _counter = 0; }
+void MyCountingButton :: resetCount(){ _counter = 0; }
 
-inline void MyCountingButton :: setCount(long count){ _counter = count; }
+void MyCountingButton :: setCount(long count){ _counter = count; }
 
-inline void MyCountingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
+void MyCountingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
 
-inline void MyCountingButton :: setCountingProfile(uint8_t profile){ _profile = (profile >= 0 && profile <= 2) ? profile : _profile; }
+void MyCountingButton :: setCountingProfile(uint8_t profile){ _profile = (profile <= 2) ? profile : _profile; }
 
 /* ----------------------------------------------------------------------------------- */
 /* -------------------------- KEY FUNCTION FOR COUNTER ------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-inline long MyCountingButton :: getCount(){ return _counter; }
+long MyCountingButton :: getCount(){ return _counter; }
 
 /* ----------------------------------------------------------------------------------- */
 /* ------------------------- LOOP (SHOWROOM) FOR COUNTER ----------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-inline void MyCountingButton :: _update_counter(){ _counter += _direction; }
+void MyCountingButton :: _update_counter(){ _counter += _direction; }
 
 void MyCountingButton :: loopCounter(){
 
@@ -130,11 +131,11 @@ void MyCountingButton :: loopCounter(){
     case true:{
 
       // ISR was triggered and button is still pressed
-      if(_trig_flag && (millis() - _trigger_time >= _debounce_time)){
+      if(_trig_flag == true && (millis() - _trigger_time >= _debounce_time)){
         _update_counter();
         _trig_flag = false;
       }
-      break;
+      return;
     } // END _ Interrupt case
 
     case false:{
@@ -169,7 +170,7 @@ void MyCountingButton :: loopCounter(){
         default: break;
       }
       
-      break;
+      return;
     } // END _ Non interrupt case
 
     default: break;

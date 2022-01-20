@@ -64,7 +64,7 @@
 
       long _trigger_count; // The goal to trigger a function (supplied by the user) upon reaching
       unsigned long _trigger_time; // Holds the time we triggered at
-      bool _trig_flag; // Flag that signals whether there was an interrupt or not
+      volatile bool _trig_flag; // Flag that signals whether there was an interrupt or not
       bool _trigger_on_count; // Flag that's set if trigger on count is ON
 
       uint8_t _profile; // Update on Falling/Rising/Changing edge 
@@ -96,14 +96,14 @@
       void setupTriggerOnCount(long count, void (*callback)(void));
       
       // Configuration of counting params
-      inline void setDirection(int8_t direction); // Either to count UP or DOWN
-      inline void resetCount(); // Resets the count to 0
-      inline void setCount(long count); // Sets the current value of the count
-      inline void setTriggerCount(long count); // Sets the target for the triggering counter
-      inline void setCountingProfile(uint8_t profile); // Configures on which edge the conting happens
+      void setDirection(int8_t direction); // Either to count UP or DOWN
+      void resetCount(); // Resets the count to 0
+      void setCount(long count); // Sets the current value of the count
+      void setTriggerCount(long count); // Sets the target for the triggering counter
+      void setCountingProfile(uint8_t profile); // Configures on which edge the conting happens
 
       // Return the current count
-      inline long getCount();
+      long getCount();
 
       // This will keep the button alive and counting during the interrupt
       void loopCounter();
