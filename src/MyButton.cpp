@@ -173,8 +173,8 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
         time_since_clicked = millis();
         flag = (flag & ~BTN_STATE_STEP_BITMASK) | (1 << 4);
       }
-      return NON_CLICKED;
-    
+      break;
+
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
         flag &= ~BTN_STATE_STEP_BITMASK;
@@ -183,6 +183,7 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
         flag = (flag & ~BTN_STATE_STEP_BITMASK) | (2 << 4); // We have a true click
       }
       break;
+
     case TRUE_CLICK:
       if(digitalRead(button_pin) == off_state){
         flag &= ~BTN_STATE_STEP_BITMASK;
@@ -193,6 +194,8 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
       }
       break;
   }
+  
+  return NON_CLICKED;
 }
 
 /*
@@ -213,15 +216,15 @@ uint8_t MyButton :: readMultiple(uint32_t * periods, uint8_t len){
     case READ_BTN:
       if(digitalRead(button_pin) == (1 - off_state)){
         time_since_clicked = millis();
-        flag |= BTN_STATE_MULTIPLE_BITMASK;
+        flag |= BTN_STATE_MULTIPLE_BITMASK; // Go to WAIT_BTN state
       }
-      return NON_CLICKED;
+      break;
 
     case WAIT_BTN:
       if(digitalRead(button_pin) == off_state){
-        for(uint8_t idx = len - 1; idx >= 0; idx--){
+        for(uint8_t idx = len - 1; idx == 0; idx--){
           if(millis() - time_since_clicked >= periods[idx]){
-            flag &= ~BTN_STATE_MULTIPLE_BITMASK;
+            flag &= ~BTN_STATE_MULTIPLE_BITMASK; // Return to READ_BTN state
             return idx;
           }
         }
@@ -229,4 +232,5 @@ uint8_t MyButton :: readMultiple(uint32_t * periods, uint8_t len){
       }
       break;
   }
+  return NON_CLICKED;
 }
