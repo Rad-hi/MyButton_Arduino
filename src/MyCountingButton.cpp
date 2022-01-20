@@ -127,16 +127,12 @@ void MyCountingButton :: loopCounter(){
   if(_trigger_on_count && _counter == _trigger_count) (*_count_callback)();
 
   // Functioning in ISR mode and ISR was triggered and button is still pressed
-<<<<<<< HEAD
   if(_operate_interrupt && _trig_flag && (millis() - _trigger_time >= _debounce_time)){
-=======
-  if(_operate_interrupt && _trig_flag == true && (millis() - _trigger_time >= _debounce_time)){
->>>>>>> da50b966c71265c3074981fd6b2a581947a297d0
-    _update_counter();
+    update_counter();
     _trig_flag = false;
     return;
   }
-    
+
   // We're only here if there's no interrupt routine
   static uint8_t pin_state;
   static unsigned long time_since_clicked;
