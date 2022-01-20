@@ -126,53 +126,45 @@ void MyCountingButton :: loopCounter(){
   // We check if there's a function to be called when a certain action happens
   if(_trigger_on_count && _counter == _trigger_count) (*_count_callback)();
 
-  // Operation mode based on whether we're couting with interrupts or not
-  switch(_operate_interrupt){ 
-    case true:{
+  if(_operate_interrupt){ // Operation mode based on whether we're couting with interrupts or not
+    // ISR was triggered and button is still pressed
+    if(_trig_flag == true && (millis() - _trigger_time >= _debounce_time)){
+      _update_counter();
+      _trig_flag = false;
+    }
+    return;
+  }
 
-      // ISR was triggered and button is still pressed
-      if(_trig_flag == true && (millis() - _trigger_time >= _debounce_time)){
-        _update_counter();
-        _trig_flag = false;
+  // We're only here if there's no interrupt routine
+  static uint8_t pin_state;
+  static unsigned long time_since_clicked;
+
+  switch(pin_state){
+    case READ_:
+      if(digitalRead(_button_pin) == (1 - _off_state)){
+        pin_state = CLICK_;
+        time_since_clicked = millis();
       }
-      return;
-    } // END _ Interrupt case
+    break;
 
-    case false:{
-      static uint8_t pin_state;
-      static unsigned long time_since_clicked;
-
-      switch(pin_state){
-        case READ_:
-          if(digitalRead(_button_pin) == (1 - _off_state)){
-            pin_state = CLICK_;
-            time_since_clicked = millis();
-          }
-        break;
-
-        case CLICK_:
-          if(millis() - time_since_clicked >= _debounce_time){
-            pin_state = RELEASE_; // True click
-            if(_profile == ON_CHANGE || _profile == ON_RISING) _update_counter();
-          }
-          else if(digitalRead(_button_pin) == _off_state){
-            pin_state = READ_; // Bounce
-          }
-        break;
-
-        case RELEASE_:
-          if(digitalRead(_button_pin) == _off_state){
-            pin_state = READ_; // Released
-            if(_profile == ON_CHANGE || _profile == ON_FALLING) _update_counter();
-          }
-        break;
-
-        default: break;
+    case CLICK_:
+      if(millis() - time_since_clicked >= _debounce_time){
+        pin_state = RELEASE_; // True click
+        if(_profile == ON_CHANGE || _profile == ON_RISING) _update_counter();
       }
-      
-      return;
-    } // END _ Non interrupt case
+      else if(digitalRead(_button_pin) == _off_state){
+        pin_state = READ_; // Bounce
+      }
+    break;
+
+    case RELEASE_:
+      if(digitalRead(_button_pin) == _off_state){
+        pin_state = READ_; // Released
+        if(_profile == ON_CHANGE || _profile == ON_FALLING) _update_counter();
+      }
+    break;
 
     default: break;
-  } // END _ OP mode selector
+  } // END _ BTN Reading State Machine 
+
 }
