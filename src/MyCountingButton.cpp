@@ -126,15 +126,13 @@ void MyCountingButton :: loopCounter(){
   // We check if there's a function to be called when a certain action happens
   if(_trigger_on_count && _counter == _trigger_count) (*_count_callback)();
 
-  if(_operate_interrupt){ // Operation mode based on whether we're couting with interrupts or not
-    // ISR was triggered and button is still pressed
-    if(_trig_flag == true && (millis() - _trigger_time >= _debounce_time)){
-      _update_counter();
-      _trig_flag = false;
-    }
+  // Functioning in ISR mode and ISR was triggered and button is still pressed
+  if(_operate_interrupt && _trig_flag && (millis() - _trigger_time >= _debounce_time)){
+    _update_counter();
+    _trig_flag = false;
     return;
   }
-
+    
   // We're only here if there's no interrupt routine
   static uint8_t pin_state;
   static unsigned long time_since_clicked;
