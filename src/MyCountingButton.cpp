@@ -118,7 +118,7 @@ inline long MyCountingButton :: getCount(){ return _counter; }
 /* ------------------------- LOOP (SHOWROOM) FOR COUNTER ----------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-inline void MyCountingButton :: _increment_counter(){ _counter += _direction; }
+inline void MyCountingButton :: _update_counter(){ _counter += _direction; }
 
 void MyCountingButton :: loopCounter(){
 
@@ -131,7 +131,7 @@ void MyCountingButton :: loopCounter(){
 
       // ISR was triggered and button is still pressed
       if(_trig_flag && (millis() - _trigger_time >= _debounce_time)){
-        _increment_counter();
+        _update_counter();
         _trig_flag = false;
       }
       break;
@@ -152,7 +152,7 @@ void MyCountingButton :: loopCounter(){
         case CLICK_:
           if(millis() - time_since_clicked >= _debounce_time){
             pin_state = RELEASE_; // True click
-            if(_profile == ON_CHANGE || _profile == ON_RISING) _increment_counter();
+            if(_profile == ON_CHANGE || _profile == ON_RISING) _update_counter();
           }
           else if(digitalRead(_button_pin) == _off_state){
             pin_state = READ_; // Bounce
@@ -162,7 +162,7 @@ void MyCountingButton :: loopCounter(){
         case RELEASE_:
           if(digitalRead(_button_pin) == _off_state){
             pin_state = READ_; // Released
-            if(_profile == ON_CHANGE || _profile == ON_FALLING) _increment_counter();
+            if(_profile == ON_CHANGE || _profile == ON_FALLING) _update_counter();
           }
         break;
 

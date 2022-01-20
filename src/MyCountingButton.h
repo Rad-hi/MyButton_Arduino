@@ -72,7 +72,7 @@
       //void (*_ISR_callback)(void);
       void (*_count_callback)(void); // Callback for the trigger on specific count function
 
-      inline void _increment_counter();
+      inline void _update_counter();
       
     public:
 
