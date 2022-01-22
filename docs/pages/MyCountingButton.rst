@@ -30,41 +30,41 @@ The instanciation is simple, ``MyCountingButton my_counting_btn`` and now you ha
 
     - we can **begin** the interruption based counting through the call of:
         
-        - ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void));``
+        + ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void));``
         
-        - ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_);``
+        + ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_);``
         
-        - ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_, uint8_t trigger_on);``
+        + ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void), uint8_t dir_, uint8_t trigger_on);``
 
     - Where each non-provided option falls to the default ones, the default direction is ``ASCENDING (++)``, and default trigger_on is ``FALLING``.
 
     - A call to this begin function would look like this:
         
-        - ``my_counting_btn.beginCountingInterrupter(ISR_BTN_PIN, GET_ISR(isr_btn, countingInterruption));``
+        + ``my_counting_btn.beginCountingInterrupter(ISR_BTN_PIN, GET_ISR(isr_btn, countingInterruption));``
 
 - Normal events counting:
     
     - We can **begin** the noraml counting button through the call of:
         
-        - ``void begin(uint8_t pin);``
+        + ``void begin(uint8_t pin);``
         
-        - ``void begin(uint8_t pin, uint8_t off_state);``
+        + ``void begin(uint8_t pin, uint8_t off_state);``
         
-        - ``void begin(uint8_t pin, uint8_t off_state, uint8_t dir);``
+        + ``void begin(uint8_t pin, uint8_t off_state, uint8_t dir);``
         
-        - ``void begin(uint8_t pin, uint8_t off_state, uint8_t dir, uint8_t debounce_t);``
+        + ``void begin(uint8_t pin, uint8_t off_state, uint8_t dir, uint8_t debounce_t);``
     
     - Defaults:
         
-        - off_state: NORMAL_UP
+        + off_state: NORMAL_UP
         
-        - dir: ASCENDING
+        + dir: ASCENDING
         
-        - debounce_t: 5 [milliseconds]
+        + debounce_t: 5 [milliseconds]
     
     - A call to this begin function would look like this:
         
-        - ``my_counting_btn.begin(BTN_PIN, NORMAL_UP, ASCENDING, 25);``
+        + ``my_counting_btn.begin(BTN_PIN, NORMAL_UP, ASCENDING, 25);``
 
 2.2. Available methods
 ++++++++++++++++++++++
@@ -80,21 +80,16 @@ We have a number of settings possible that we can perform on our counting button
 
     - Example:
     
-        ``
-            #define BUTTON_PIN          5
-
-            void callback(){
-                Serial.println("10 clicks!");
-                my_counting_btn.resetCount();
-            }
-
-            void setup(){
-                Serial.begin(9600);
-                btn.begin(BUTTON_PIN, NORMAL_UP, ASCENDING, 25);
-
-                btn.setupTriggerOnCount(10, callback);
-            }
-        ``
+        ``  #define BUTTON_PIN          5``
+        ``    void callback(){``
+        ``        Serial.println("10 clicks!");``
+        ``        my_counting_btn.resetCount();``
+        ``    }``
+        ``    void setup(){``
+        ``        Serial.begin(9600);``
+        ``        btn.begin(BUTTON_PIN, NORMAL_UP, ASCENDING, 25);``
+        ``        btn.setupTriggerOnCount(10, callback);``
+        ``    }``
 
 - And we can change the value to be triggered at dynamically through the call to: ``void setTriggerCount(long count);``
 - Configure whether to count UP or DOWN: ``void setDirection(int8_t direction);`` 
