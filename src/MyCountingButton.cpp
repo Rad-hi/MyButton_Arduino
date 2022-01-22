@@ -107,7 +107,7 @@ void MyCountingButton :: setCount(long count){ _counter = count; }
 
 void MyCountingButton :: setTriggerCount(long count){ _trigger_count = count != 0 ? count : _trigger_count; }
 
-void MyCountingButton :: setCountingProfile(uint8_t profile){ _profile = (profile <= 2) ? profile : _profile; }
+void MyCountingButton :: setCountingProfile(uint8_t profile){ _profile = profile <= 2 ? profile : _profile; }
 
 /* ----------------------------------------------------------------------------------- */
 /* -------------------------- KEY FUNCTION FOR COUNTER ------------------------------- */
