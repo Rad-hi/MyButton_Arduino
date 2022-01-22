@@ -22,7 +22,9 @@ The workflow is basic, you first instanciate an object ``MyButton my_button`` wi
 
 - Default debouncing time of **5ms**:
 
-	``MyButton my_button(MY_BUTTON_PIN, NORMAL_UP);`` or ``MyButton my_button(MY_BUTTON_PIN, NORMAL_DOWN);``
+	``MyButton my_button(MY_BUTTON_PIN, NORMAL_UP);``
+    
+    ``MyButton my_button(MY_BUTTON_PIN, NORMAL_DOWN);``
 
 - Custom debouncing time:
 	
@@ -34,18 +36,23 @@ The ``NORMAL_UP``, and ``NORMAL_DOWN`` keywords refer to whether the push button
 ++++++++++++++++++++++
 
 - ``bool readRisingClick();``
+
     Returns a boolean value corresponding to the occurrence of a ``rising`` edge on the button pin.
 
 - ``bool readFallingClick();``
+
     Returns a boolean value corresponding to the occurrence of a ``falling`` edge on the button pin.
 
 - ``uint32_t readTimedPress(uint8_t unit);``
+
     Returns the time the button has been clicked for in one of 3 units (micros, millis, seconds) **NON-DEBOUNCED**
 
 - ``uint8_t readInSteps(uint32_t period, uint8_t num_steps);``
+
     This function takes in a period in **milliseconds** and a number of steps, and on each step of that period ``step == period/num_steps``, returns the ``index`` of the step, **0 INDEXED**, else returns NON_CLICKED (==255).
 
 - ``uint8_t readMultiple(uint32_t * periods, uint8_t len);``
+
     This function takes in an **incrementally sorted list of periods in milliseconds**, and if the button have been pressed for more than one of the periods (CHECKED ON RELEASE), it'd return the ``index`` of the period in the list, else it returns NON_CLICKED (==255). **ZERO-INDEXED**
 
 2.3. Notes

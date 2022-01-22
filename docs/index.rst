@@ -3,7 +3,7 @@ Welcome to MyButton Arduino Library's documentation!
 ====================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    pages/Getting_started

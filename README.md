@@ -6,7 +6,7 @@
 
 ## A push button debouncing and "enhancing" library for complex user interfaces
 
-Read the docs: []().
+Read the docs: [https://mybutton-arduino.readthedocs.io/en/latest/index.html](https://mybutton-arduino.readthedocs.io/en/latest/index.html).
 
 ## How to install ?
 
