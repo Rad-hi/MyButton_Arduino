@@ -80,16 +80,18 @@ We have a number of settings possible that we can perform on our counting button
 
     - Example:
     
-        ``  #define BUTTON_PIN          5``
-        ``    void callback(){``
-        ``        Serial.println("10 clicks!");``
-        ``        my_counting_btn.resetCount();``
-        ``    }``
-        ``    void setup(){``
-        ``        Serial.begin(9600);``
-        ``        btn.begin(BUTTON_PIN, NORMAL_UP, ASCENDING, 25);``
-        ``        btn.setupTriggerOnCount(10, callback);``
-        ``    }``
+        ``#define BUTTON_PIN          5``
+        
+        ``void callback(){``
+            ``Serial.println("10 clicks!");``
+            ``my_counting_btn.resetCount();``
+        ``}``
+        
+        ``void setup(){``
+            ``Serial.begin(9600);``
+            ``btn.begin(BUTTON_PIN, NORMAL_UP, ASCENDING, 25);``
+            ``btn.setupTriggerOnCount(10, callback);``
+        ``}``
 
 - And we can change the value to be triggered at dynamically through the call to: ``void setTriggerCount(long count);``
 - Configure whether to count UP or DOWN: ``void setDirection(int8_t direction);`` 
