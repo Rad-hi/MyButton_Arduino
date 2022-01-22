@@ -6,34 +6,7 @@
 
 ## A push button debouncing and "enhancing" library for complex user interfaces
 
-This library was made to make it easier to use push buttons, solve the debouncing problems, and allow makers to make more complex user interfaces through enhancing push-buttons with extra complex functionalities.
-
-This library allows for: 
-
-- Detection of pressing events on both the **RISING/FALLING** edges with debouncing.
-- Association of multiple behaviors for a single button by creating multiple "checkpoints" for the button to report reaching **upon release**.
-- Getting the progress of the pushed button **towards a target period** in a number of **specified steps**.
-- Getting the time the button have been clicked for in 3 units (seconds, milliseconds, microseconds).
-
-**All happening in a non-blocking manner.**
-
-## How to use ?
-
-### 1 - Instanciate the button object with the required options:
-
-- Default debouncing time of **5ms**:
-
-	```MyButton my_button(MY_BUTTON_PIN, NORMAL_UP);``` or ```MyButton my_button(MY_BUTTON_PIN, NORMAL_DOWN);```
-
-- Custom debouncing time:
-	
-	```MyButton my_button(MY_BUTTON_PIN, NORMAL_UP, 25);```
-
-The ```NORMAL_UP```, and ```NORMAL_DOWN``` keywords refer to whether the push button is normally UP or DOWN (pulled UP or DOWN).
-
-### 2 - Then call a function following the examples, though:
-
-One thing to take into consideration, is that for saving on resources, and since there's no apparent use-case where someone would configure one button to exert more than one of the behaviors possible through the functions, the time tracking and the state variables are **shared** between functions, so calling _ as an example _ ```readRisingClick()```, and ```readFallingClick``` back to back in the same loop would make the code behave unpredictibly.
+Read the docs: []().
 
 ## How to install ?
 
@@ -51,9 +24,16 @@ Click on **Download ZIP** to download the library, place the unzipped folder int
 
 ## Change LOG
 
-### v1.0.1 (22nd August, 2021):
+### v1.2.0 (22th January, 2022)
 
-The ```readRisingClick()``` was repeatedly reporting a "rising edge" detection as long as the button was pressed, so fixed that, and now it's reporting only the detection of the rising edge, as it's supposed to do.
+- Created **MyCountingButton** library, didn't test it thoroughly though, just made sure that all functionalities work as intended.
+- Created a documentation on [readthedocs.org](https://readthedocs.org/), which is present under the ```docs/``` folder.
+- Updated this readme.
+- TODO: Examples for the **MyCountingButton** library. 
+
+### v1.1.0 (24th August, 2021)
+
+- The major change is that, there were some compatibility issues with Arduino, and now the examples work with **both the Arduino UNO, and the ESP32** (Only tested on an **UNO** and an **ESP32**, gonna try to test on an **ESP8266** soon).
 
 ### v1.0.2 (24th August, 2021):
 
@@ -62,6 +42,6 @@ The ```readRisingClick()``` was repeatedly reporting a "rising edge" detection a
 - Grouped the state variables used for all functions into a single ```uint8_t flag``` saving with this 3 bytes of memory.
 - Added multiple buttons driven animations example.
 
-### v1.1.0 (24th August, 2021)
+### v1.0.1 (22nd August, 2021):
 
-- The major change is that, there were some compatibility issues with Arduino, and now the examples work with **both the Arduino UNO, and the ESP32** (Only tested on an **UNO** and an **ESP32**, gonna try to test on an **ESP8266** soon).
+The ```readRisingClick()``` was repeatedly reporting a "rising edge" detection as long as the button was pressed, so fixed that, and now it's reporting only the detection of the rising edge, as it's supposed to do.
