@@ -4,9 +4,9 @@
 
 > Demo using the ```readInSteps``` function (check the SSD1306_multibutton example for code)
 
-## A push button debouncing and "enhancing" library for complex user interfaces
+## Making buttons easy and fun to work with
 
-Read the docs: [https://mybutton-arduino.readthedocs.io/en/latest/index.html](https://mybutton-arduino.readthedocs.io/en/latest/index.html).
+To discover what this library offers, read the docs: [https://mybutton-arduino.readthedocs.io/en/latest/index.html](https://mybutton-arduino.readthedocs.io/en/latest/index.html).
 
 ## How to install ?
 

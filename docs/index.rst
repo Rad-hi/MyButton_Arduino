@@ -14,6 +14,5 @@ Welcome to MyButton Arduino Library's documentation!
 Links
 =====
 
-* :ref:`search`
 * Source code: https://github.com/Rad-hi/MyButton_Arduino
 * Author: https://github.com/Rad-hi
