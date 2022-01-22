@@ -4,6 +4,8 @@
 
 > Demo using the ```readInSteps``` function (check the SSD1306_multibutton example for code)
 
+<img src=https://img.shields.io/badge/<Docs>-<Read the documentation>-<brightgreen>>
+
 ## Making buttons easy and fun to work with
 
 To discover what this library offers, read the docs: [https://mybutton-arduino.readthedocs.io/en/latest/index.html](https://mybutton-arduino.readthedocs.io/en/latest/index.html).
