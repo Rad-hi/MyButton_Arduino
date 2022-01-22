@@ -1,19 +1,52 @@
-# Type
-MyButton 			KEYWORD1
+################################
+###         MyButton         ###
+################################
 
-# Functions
-readRisingClick		KEYWORD2
-readFallingClick	KEYWORD2
-readTimedPress		KEYWORD2
-readInSteps			KEYWORD2
-readMultiple		KEYWORD2
+# Type
+MyButton 			                KEYWORD1
+
+# MyButton Functions
+readRisingClick		                KEYWORD2
+readFallingClick	                KEYWORD2
+readTimedPress		                KEYWORD2
+readInSteps			                KEYWORD2
+readMultiple		                KEYWORD2
 
 # Constants
-DEFAULT_DEBOUNCE	LITERAL1
-NON_CLICKED			LITERAL1
-IN_SECONDS			LITERAL1
-IN_MILLIS			LITERAL1
-IN_MICROS			LITERAL1
-NORMAL_UP			LITERAL1
-NORMAL_DOWN			LITERAL1
-ABORTED_STEPS		LITERAL1	
+DEFAULT_DEBOUNCE	                LITERAL1
+NON_CLICKED			                LITERAL1
+IN_SECONDS			                LITERAL1
+IN_MILLIS			                LITERAL1
+IN_MICROS			                LITERAL1
+NORMAL_UP			                LITERAL1
+NORMAL_DOWN			                LITERAL1
+ABORTED_STEPS		                LITERAL1	
+
+
+################################
+###     MyCountingButton     ###
+################################
+
+# Type
+MyCountingButton                    KEYWORD1
+
+# MyCountingButton Functions
+beginCountingInterrupter            KEYWORD2
+countingInterruption                KEYWORD2
+begin                               KEYWORD2
+setupTriggerOnCount                 KEYWORD2
+setDirection                        KEYWORD2
+resetCount                          KEYWORD2
+setCount                            KEYWORD2
+setTriggerCount                     KEYWORD2
+setCountingProfile                  KEYWORD2
+getCount                            KEYWORD2
+loopCounter                         KEYWORD2
+
+# Constants
+ASCENDING                           LITERAL1
+DESCENDING                          LITERAL1
+ON_CHANGE                           LITERAL1
+ON_RISING                           LITERAL1
+ON_FALLING                          LITERAL1
+GET_ISR                             LITERAL1
