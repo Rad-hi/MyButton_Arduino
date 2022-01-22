@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MyButton.h, a comprehensive guide</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="mybutton-h-a-comprehensive-guide">
+<h1>MyButton.h, a comprehensive guide</h1>
+<section id="what-does-the-library-offer">
+<h2>1. What does the library offer?</h2>
+<ul class="simple">
+<li><p>Detection of pressing events on both the <strong>RISING/FALLING</strong> edges with debouncing.</p></li>
+<li><p>Association of multiple behaviors for a single button by creating multiple “checkpoints” for the button to report reaching <strong>upon release</strong>.</p></li>
+<li><p>Getting the progress of the pushed button <strong>towards a target period</strong> in a number of <strong>specified steps</strong>.</p></li>
+<li><p>Getting the time the button have been clicked for in 3 units (seconds, milliseconds, microseconds).</p></li>
+</ul>
+<p><strong>All happening in a non-blocking manner.</strong></p>
+</section>
+<section id="how-to-use">
+<h2>2. How to use?</h2>
+<p>The workflow is basic, you first instanciate an object <code class="docutils literal notranslate"><span class="pre">MyButton</span> <span class="pre">my_button</span></code> with one of the customization options that are availabe, and then you call of the methods associated with the object <code class="docutils literal notranslate"><span class="pre">my_button.__method_name__()</span></code> in the <code class="docutils literal notranslate"><span class="pre">loop(){</span> <span class="pre">}</span></code>.</p>
+<section id="instanciation-of-a-button">
+<h3>2.1. Instanciation of a button</h3>
+<ul>
+<li><p>Default debouncing time of <strong>5ms</strong>:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">MyButton</span> <span class="pre">my_button(MY_BUTTON_PIN,</span> <span class="pre">NORMAL_UP);</span></code> or <code class="docutils literal notranslate"><span class="pre">MyButton</span> <span class="pre">my_button(MY_BUTTON_PIN,</span> <span class="pre">NORMAL_DOWN);</span></code></p>
+</div></blockquote>
+</li>
+<li><p>Custom debouncing time:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">MyButton</span> <span class="pre">my_button(MY_BUTTON_PIN,</span> <span class="pre">NORMAL_UP,</span> <span class="pre">MY_CUSTOM_DEBOUNCING_TIME_IN_MILLISECONDS);</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">NORMAL_UP</span></code>, and <code class="docutils literal notranslate"><span class="pre">NORMAL_DOWN</span></code> keywords refer to whether the push button is normally UP or DOWN (pulled UP or DOWN).</p>
+</section>
+<section id="available-methods">
+<h3>2.2. Available methods</h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">readRisingClick();</span></code></dt><dd><p>Returns a boolean value corresponding to the occurrence of a <code class="docutils literal notranslate"><span class="pre">rising</span></code> edge on the button pin.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">readFallingClick();</span></code></dt><dd><p>Returns a boolean value corresponding to the occurrence of a <code class="docutils literal notranslate"><span class="pre">falling</span></code> edge on the button pin.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">readTimedPress(uint8_t</span> <span class="pre">unit);</span></code></dt><dd><p>Returns the time the button has been clicked for in one of 3 units (micros, millis, seconds) <strong>NON-DEBOUNCED</strong></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">readInSteps(uint32_t</span> <span class="pre">period,</span> <span class="pre">uint8_t</span> <span class="pre">num_steps);</span></code></dt><dd><p>This function takes in a period in <strong>milliseconds</strong> and a number of steps, and on each step of that period <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">==</span> <span class="pre">period/num_steps</span></code>, returns the <code class="docutils literal notranslate"><span class="pre">index</span></code> of the step, <strong>0 INDEXED</strong>, else returns NON_CLICKED (==255).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">readMultiple(uint32_t</span> <span class="pre">*</span> <span class="pre">periods,</span> <span class="pre">uint8_t</span> <span class="pre">len);</span></code></dt><dd><p>This function takes in an <strong>incrementally sorted list of periods in milliseconds</strong>, and if the button have been pressed for more than one of the periods (CHECKED ON RELEASE), it’d return the <code class="docutils literal notranslate"><span class="pre">index</span></code> of the period in the list, else it returns NON_CLICKED (==255). <strong>ZERO-INDEXED</strong></p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="notes">
+<h3>2.3. Notes</h3>
+<ul class="simple">
+<li><p>In case you choose to do a NORMAL_DOWN button, make sure to externally pull down the push-button, otherwise, an internal pull-up resistor is used by default to the NORMAL_UP mode.</p></li>
+<li><p>For saving on resources, and since there’s no apparent use-case where someone would configure one button to exert more than one of the behaviors possible through the functions, the time tracking and the state variables are <strong>shared</strong> between functions, so calling _ as an example _ <code class="docutils literal notranslate"><span class="pre">my_button.readRisingClick()</span></code>, and <code class="docutils literal notranslate"><span class="pre">my_button.readFallingClick</span></code> back to back in the same loop would make the code behave unpredictibly.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MyCountingButton.h, a comprehensive guide</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/epub.css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="mycountingbutton-h-a-comprehensive-guide">
+<h1>MyCountingButton.h, a comprehensive guide</h1>
+<section id="what-does-the-library-offer">
+<h2>1. What does the library offer?</h2>
+<ul class="simple">
+<li><p>Couting of clicks on the RISING/FALLING/CHANGING edges</p></li>
+<li><p>Couting on hardware interruption enabled pins (expl: for encodes), or any “normal” pin</p></li>
+<li><p>Triggering of a custom callback function when a set value is reached</p></li>
+<li><p>Set the counting direction (++/–), and set a custom value to count from</p></li>
+</ul>
+<p><strong>All happening in a non-blocking manner.</strong></p>
+</section>
+<section id="how-to-use">
+<h2>2. How to use?</h2>
+<p>There’s a number of options availabe when it comes to creating a counting button. The subject that we’ll discuss in the next section.</p>
+<section id="instanciation-of-a-counting-button">
+<h3>2.1. Instanciation of a counting button</h3>
+<p>The instanciation is simple, <code class="docutils literal notranslate"><span class="pre">MyCountingButton</span> <span class="pre">my_counting_btn</span></code> and now you have a counting button, but that’s not enough to start using the methods, since this objects requires beginning, and here is where the options arise:</p>
+<ul class="simple">
+<li><p>Interruption based counting:</p></li>
+</ul>
+<p>If you’re new to interruptions, you can visit this link and discover them in details: <a class="reference external" href="https://create.arduino.cc/projecthub/rafitc/interrupts-basics-f475d5">https://create.arduino.cc/projecthub/rafitc/interrupts-basics-f475d5</a>
+This counting method could be used for <code class="docutils literal notranslate"><span class="pre">encoders</span></code>, since usually, that’s where such detection speed (the one offered by using an interruption) would be required.</p>
+<p>we can <strong>begin</strong> the interruption based counting through the call of:
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">beginCountingInterrupter(uint8_t</span> <span class="pre">irq_pin,</span> <span class="pre">void</span> <span class="pre">(*_ISR_callback)(void));</span></code>
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">beginCountingInterrupter(uint8_t</span> <span class="pre">irq_pin,</span> <span class="pre">void</span> <span class="pre">(*_ISR_callback)(void),</span> <span class="pre">uint8_t</span> <span class="pre">dir_);</span></code>
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">beginCountingInterrupter(uint8_t</span> <span class="pre">irq_pin,</span> <span class="pre">void</span> <span class="pre">(*_ISR_callback)(void),</span> <span class="pre">uint8_t</span> <span class="pre">dir_,</span> <span class="pre">uint8_t</span> <span class="pre">trigger_on);</span></code></p>
+<p>Where each non-provided option falls to the default ones, the default direction is <code class="docutils literal notranslate"><span class="pre">ASCENDING</span> <span class="pre">(++)</span></code>, and default trigger_on is <code class="docutils literal notranslate"><span class="pre">FALLING</span></code>.</p>
+<p>A call to this begin function would look like this:
+<code class="docutils literal notranslate"><span class="pre">my_counting_btn.beginCountingInterrupter(ISR_BTN_PIN,</span> <span class="pre">GET_ISR(isr_btn,</span> <span class="pre">countingInterruption));</span></code></p>
+<ul class="simple">
+<li><p>Normal events counting:</p></li>
+</ul>
+<p>We can <strong>begin</strong> the noraml counting button through the call of:
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">begin(uint8_t</span> <span class="pre">pin);</span></code>
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">begin(uint8_t</span> <span class="pre">pin,</span> <span class="pre">uint8_t</span> <span class="pre">off_state);</span></code>
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">begin(uint8_t</span> <span class="pre">pin,</span> <span class="pre">uint8_t</span> <span class="pre">off_state,</span> <span class="pre">uint8_t</span> <span class="pre">dir);</span></code>
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">begin(uint8_t</span> <span class="pre">pin,</span> <span class="pre">uint8_t</span> <span class="pre">off_state,</span> <span class="pre">uint8_t</span> <span class="pre">dir,</span> <span class="pre">uint8_t</span> <span class="pre">debounce_t);</span></code></p>
+<p>Defaults:
++ off_state: NORMAL_UP
++ dir: ASCENDING
++ debounce_t: 5 [milliseconds]</p>
+<p>A call to this begin function would look like this:
+<code class="docutils literal notranslate"><span class="pre">my_counting_btn.begin(BTN_PIN,</span> <span class="pre">NORMAL_UP,</span> <span class="pre">ASCENDING,</span> <span class="pre">25);</span></code></p>
+</section>
+<section id="available-methods">
+<h3>2.2. Available methods</h3>
+<section id="settings">
+<h4>2.2.1. Settings</h4>
+<p>We have a number of settings possible that we can perform on our counting button.</p>
+<ul>
+<li><dl>
+<dt>Configure a custom function to be called whenever a certain count is reached:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setupTriggerOnCount(long</span> <span class="pre">count,</span> <span class="pre">void</span> <span class="pre">(*callback)(void));</span></code>
++ Example:</p>
+<blockquote>
+<div></div></blockquote>
+</dd>
+</dl>
+</li>
+<li><p>And we can change the value to be triggered at dynamically through the call to: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setTriggerCount(long</span> <span class="pre">count);</span></code></p></li>
+<li><p>Configure whether to count UP or DOWN: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setDirection(int8_t</span> <span class="pre">direction);</span></code></p></li>
+<li><p>Reset the count to 0: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">resetCount();</span></code></p></li>
+<li><p>Sets the current value of the count(passed in value): <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setCount(long</span> <span class="pre">count);</span></code></p></li>
+<li><p>Configures on which edge the conting happens <code class="docutils literal notranslate"><span class="pre">profile</span> <span class="pre">=</span> <span class="pre">{ON_RISING,</span> <span class="pre">ON_FALLING,</span> <span class="pre">ON_CHANGE}</span></code>: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setCountingProfile(uint8_t</span> <span class="pre">profile);</span></code></p></li>
+</ul>
+</section>
+<section id="functionalities">
+<h4>2.2.2. Functionalities</h4>
+<ul class="simple">
+<li><p>Returns the current count value: <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">getCount();</span></code></p></li>
+<li><p>Keep the listening for the counting events happening: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">loopCounter();</span></code>. In fact, this function must be called in the <code class="docutils literal notranslate"><span class="pre">loop()</span></code> of your Arduino sketch in order to not miss any pressing events.</p></li>
+</ul>
+</section>
+</section>
+<section id="notes">
+<h3>2.3. Notes</h3>
+<ul class="simple">
+<li><p>A button could only be began as one of the two options, either interruption based, or normal, not both (it just won’t work).</p></li>
+<li><p>The interruption based counting buttons must be wired on hardware-interrupt enabled pins, otherwise it won’t work.</p></li>
+<li><p>In case you choose to do a NORMAL_DOWN button, make sure to externally pull down the push-button, otherwise, an internal pull-up resistor is used by default to the NORMAL_UP mode.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>
