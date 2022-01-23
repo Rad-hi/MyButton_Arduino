@@ -128,7 +128,7 @@ void MyCountingButton :: loopCounter(){
 
   // Functioning in ISR mode and ISR was triggered and button is still pressed
   if(_operate_interrupt && _trig_flag && (millis() - _trigger_time >= _debounce_time)){
-    update_counter();
+    _update_counter();
     _trig_flag = false;
     return;
   }
