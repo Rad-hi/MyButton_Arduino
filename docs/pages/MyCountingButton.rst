@@ -28,7 +28,7 @@ The instanciation is simple, ``MyCountingButton my_counting_btn`` and now you ha
     
     - This counting method could be used for ``encoders``, since usually, that's where such detection speed (the one offered by using an interruption) would be required.
 
-    - we can **begin** the interruption based counting through the call of:
+    - we can **begin** the interruption based counting through the call of one of these:
         
         + ``void beginCountingInterrupter(uint8_t irq_pin, void (*_ISR_callback)(void));``
         
@@ -44,7 +44,7 @@ The instanciation is simple, ``MyCountingButton my_counting_btn`` and now you ha
 
 - Normal events counting:
     
-    - We can **begin** the noraml counting button through the call of:
+    - We can **begin** the noraml counting button through the call of one of these:
         
         + ``void begin(uint8_t pin);``
         
@@ -56,11 +56,11 @@ The instanciation is simple, ``MyCountingButton my_counting_btn`` and now you ha
     
     - Defaults:
         
-        + off_state: NORMAL_UP
+        + **off_state**: ``NORMAL_UP``
         
-        + dir: ASCENDING
+        + **dir**: ``ASCENDING``
         
-        + debounce_t: 5 [milliseconds]
+        + **debounce_t**: ``5 [milliseconds]``
     
     - A call to this begin function would look like this:
         
@@ -89,15 +89,20 @@ We have a number of settings possible that we can perform on our counting button
             }
             void setup(){
                 Serial.begin(9600);
-                btn.begin(BUTTON_PIN, NORMAL_UP, ASCENDING, 25);
-                btn.setupTriggerOnCount(10, callback);
+                my_counting_btn.begin(BUTTON_PIN, NORMAL_UP, ASCENDING, 25);
+                my_counting_btn.setupTriggerOnCount(10, callback);
             }
 
-- And we can change the value to be triggered at dynamically through the call to: ``void setTriggerCount(long count);``
-- Configure whether to count UP or DOWN: ``void setDirection(int8_t direction);`` 
-- Reset the count to 0: ``void resetCount();``
-- Sets the current value of the count(passed in value): ``void setCount(long count);``
-- Configures on which edge the conting happens ``profile = {ON_RISING, ON_FALLING, ON_CHANGE}``: ``void setCountingProfile(uint8_t profile);``
+- And we can change the value to be triggered at dynamically through the call to:
+    - ``void setTriggerCount(long count);``
+- Configure whether to count UP or DOWN: 
+    - ``void setDirection(int8_t direction);`` 
+- Reset the count to 0: 
+    - ``void resetCount();``
+- Sets the current value of the count(passed in value): 
+    - ``void setCount(long count);``
+- Configures on which edge the conting happens ``profile = {ON_RISING, ON_FALLING, ON_CHANGE}``: 
+    - ``void setCountingProfile(uint8_t profile);``
 
 2.2.2. Functionalities
 ======================
