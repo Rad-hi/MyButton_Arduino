@@ -29,7 +29,7 @@ Click on **Download ZIP** to download the library, place the unzipped folder int
 - Created **MyCountingButton** library, didn't test it thoroughly though, just made sure that all functionalities work as intended.
 - Created a documentation on [readthedocs.org](https://readthedocs.org/), which is present under the ```docs/``` folder.
 - Updated this readme.
-- TODO: Examples for the **MyCountingButton** library. 
+- Created two examples for the **MyCountingButton** library. 
 
 ### v1.1.0 (24th August, 2021)
 
