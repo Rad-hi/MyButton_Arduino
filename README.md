@@ -2,7 +2,7 @@
 
 <img src="images/multi_btn_1x75.gif" width=640>
 
-> Demo using the ```readInSteps``` function (check the SSD1306_multibutton example for code)
+> Demo using the ```readInSteps``` function (check the MyButton_SSD1306_multibutton example for code)
 
 ## Making buttons easy and fun to work with
 
