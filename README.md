@@ -24,7 +24,7 @@ Click on **Download ZIP** to download the library, place the unzipped folder int
 
 ## Change LOG
 
-### v1.2.0 (22th January, 2022)
+### v2.0.0 (24th January, 2022)
 
 - Created **MyCountingButton** library, didn't test it thoroughly though, just made sure that all functionalities work as intended.
 - Created a documentation on [readthedocs.org](https://readthedocs.org/), which is present under the ```docs/``` folder.
