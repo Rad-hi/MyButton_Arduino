@@ -1,36 +1,11 @@
-################################
-###         MyButton         ###
-################################
+MyButton                            KEYWORD1
+MyCountingButton                    KEYWORD1
 
-# Type
-MyButton 			                KEYWORD1
-
-# MyButton Functions
 readRisingClick		                KEYWORD2
 readFallingClick	                KEYWORD2
 readTimedPress		                KEYWORD2
 readInSteps			                KEYWORD2
 readMultiple		                KEYWORD2
-
-# Constants
-DEFAULT_DEBOUNCE	                LITERAL1
-NON_CLICKED			                LITERAL1
-IN_SECONDS			                LITERAL1
-IN_MILLIS			                LITERAL1
-IN_MICROS			                LITERAL1
-NORMAL_UP			                LITERAL1
-NORMAL_DOWN			                LITERAL1
-ABORTED_STEPS		                LITERAL1	
-
-
-################################
-###     MyCountingButton     ###
-################################
-
-# Type
-MyCountingButton                    KEYWORD1
-
-# MyCountingButton Functions
 beginCountingInterrupter            KEYWORD2
 countingInterruption                KEYWORD2
 begin                               KEYWORD2
@@ -43,7 +18,14 @@ setCountingProfile                  KEYWORD2
 getCount                            KEYWORD2
 loopCounter                         KEYWORD2
 
-# Constants
+DEFAULT_DEBOUNCE	                LITERAL1
+NON_CLICKED			                LITERAL1
+IN_SECONDS			                LITERAL1
+IN_MILLIS			                LITERAL1
+IN_MICROS			                LITERAL1
+NORMAL_UP			                LITERAL1
+NORMAL_DOWN			                LITERAL1
+ABORTED_STEPS		                LITERAL1
 ASCENDING                           LITERAL1
 DESCENDING                          LITERAL1
 ON_CHANGE                           LITERAL1
