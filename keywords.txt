@@ -1,6 +1,7 @@
 MyButton                            KEYWORD1
 MyCountingButton                    KEYWORD1
 
+readRawClick                        KEYWORD2
 readRisingClick		                KEYWORD2
 readFallingClick	                KEYWORD2
 readTimedPress		                KEYWORD2
