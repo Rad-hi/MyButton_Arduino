@@ -35,6 +35,9 @@ The ``NORMAL_UP``, and ``NORMAL_DOWN`` keywords refer to whether the push button
 2.2. Available methods
 ++++++++++++++++++++++
 
+- ``bool readRawClick();``
+    + Returns whether the button was pressed or not **NON-DEBOUNCED**
+
 - ``bool readRisingClick();``
     
     + Returns a boolean value corresponding to the occurrence of a ``rising`` edge on the button pin.

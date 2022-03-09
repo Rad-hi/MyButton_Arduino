@@ -78,6 +78,7 @@
       MyButton(uint8_t pin, uint8_t off_state_, uint8_t debounce_t);
       
       /* Functions */
+      bool readRaw();
       bool readRisingClick();
       bool readFallingClick();
       uint32_t readTimedPress(uint8_t unit);

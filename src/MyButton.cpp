@@ -64,6 +64,13 @@ MyButton :: MyButton(uint8_t pin, uint8_t off_state_, uint8_t debounce_t){
 }
 
 /*
+ * Returns whether the button was pressed or not (NO DEBOUNCING)
+ */
+bool MyButton :: readRawClick(){
+  return digitalRead(button_pin) == (1 - off_state);
+}
+
+/*
  * Returns whether the button was pressed or not with the debounce time (FALLING EDGE)
  */
 bool MyButton :: readFallingClick(){
