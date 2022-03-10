@@ -6,6 +6,7 @@ readRisingClick		                KEYWORD2
 readFallingClick	                KEYWORD2
 readTimedPress		                KEYWORD2
 readInSteps			                KEYWORD2
+readInProvidedSteps                 KEYWORD2
 readMultiple		                KEYWORD2
 beginCountingInterrupter            KEYWORD2
 countingInterruption                KEYWORD2

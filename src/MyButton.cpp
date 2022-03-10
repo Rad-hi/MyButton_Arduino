@@ -205,6 +205,98 @@ uint8_t MyButton :: readInSteps(uint32_t period, uint8_t num_steps){
 }
 
 /*
+ * Returns, as long as the button is pressed, the index of the reached 
+ * period (provided list of incrementally sorted periods), aka the step
+ * ------------------------------------------------------------------
+ * @brief: This function takes in a list of INCREMENTALLY SORTED 
+ * periods in Ms, and upon reaching a period of that list, returns
+ * the index of the step, 0 INDEXED, else returns 255.
+ * ------------------------------------------------------------------
+ * @param periods: The list of periods to be checked 
+ * @param num_steps: The number of periods
+ */
+uint8_t MyButton :: readInProvidedSteps(uint32_t * periods, uint8_t num_steps){
+  /* Obviously */
+  if(num_steps == 0) return NON_CLICKED;
+  
+  switch((flag & BTN_STATE_STEP_BITMASK) >> 4){
+    case READ_BTN:
+      step = 0;
+      if(digitalRead(button_pin) == (1 - off_state)){
+        time_since_clicked = millis();
+        flag = (flag & ~BTN_STATE_STEP_BITMASK) | (1 << 4);
+      }
+      break;
+
+    case WAIT_BTN:
+      if(digitalRead(button_pin) == off_state){
+        flag &= ~BTN_STATE_STEP_BITMASK;
+      }
+      else if(millis() - time_since_clicked >= debounce_time){
+        flag = (flag & ~BTN_STATE_STEP_BITMASK) | (2 << 4); // We have a true click
+      }
+      break;
+
+    case TRUE_CLICK:
+      if(digitalRead(button_pin) == off_state){
+        flag &= ~BTN_STATE_STEP_BITMASK;
+        if(step < num_steps - 1) return ABORTED_STEPS;
+      }
+      else if(step < num_steps && millis() - time_since_clicked >= periods[step]){
+        return step++;
+      }
+      break;
+  }
+  return NON_CLICKED;
+}
+
+/*
+ * Returns, as long as the button is pressed, the index of the reached 
+ * period (provided list of incrementally sorted periods), aka the step
+ * ------------------------------------------------------------------
+ * @brief: This function takes in a list of INCREMENTALLY SORTED 
+ * periods in Ms, and upon reaching a period of that list, returns
+ * the index of the step, 0 INDEXED, else returns 255.
+ * ------------------------------------------------------------------
+ * @param periods: The list of periods to be checked 
+ * @param num_steps: The number of periods
+ */
+uint8_t MyButton :: readInProvidedSteps(uint32_t * periods, uint8_t num_steps, uint8_t starting_step){
+  /* Obviously */
+  if(num_steps == 0) return NON_CLICKED;
+  
+  switch((flag & BTN_STATE_STEP_BITMASK) >> 4){
+    case READ_BTN:
+      step = starting_step;
+      if(digitalRead(button_pin) == (1 - off_state)){
+        time_since_clicked = millis();
+        flag = (flag & ~BTN_STATE_STEP_BITMASK) | (1 << 4);
+      }
+      break;
+
+    case WAIT_BTN:
+      if(digitalRead(button_pin) == off_state){
+        flag &= ~BTN_STATE_STEP_BITMASK;
+      }
+      else if(millis() - time_since_clicked >= debounce_time){
+        flag = (flag & ~BTN_STATE_STEP_BITMASK) | (2 << 4); // We have a true click
+      }
+      break;
+
+    case TRUE_CLICK:
+      if(digitalRead(button_pin) == off_state){
+        flag &= ~BTN_STATE_STEP_BITMASK;
+        if(step < num_steps - 1) return ABORTED_STEPS;
+      }
+      else if(step < num_steps &&  millis() - time_since_clicked >= periods[step]){
+        return step++;
+      }
+      break;
+  }
+  return NON_CLICKED;
+}
+
+/*
  * Returns, if the button have been pressed for longer than one of the
  * periods in the input list, the index of the corresponding period
  * ------------------------------------------------------------------

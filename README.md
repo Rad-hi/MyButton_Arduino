@@ -24,6 +24,14 @@ Click on **Download ZIP** to download the library, place the unzipped folder int
 
 ## Change LOG
 
+### v2.0.3 (10th March, 2022)
+
+- Added ```readInProvidedSteps()``` to **MyButton**, to achieve similar behavior to the ```readMultiple()``` but continiously getting the reached step, not only on the falling edge. 
+
+### v2.0.2 (9th March, 2022)
+
+- Added ```readRawClick()``` to **MyButton**, to get the non-debounced raw state (click) of the button.
+
 ### v2.0.1 (26th January, 2022)
 
 - Created **MyCountingButton** library, didn't test it thoroughly though, just made sure that all functionalities work as intended.
